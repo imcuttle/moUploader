@@ -1,7 +1,9 @@
 # Created by .ignore support plugin (hsz.mobi)
 
 # IntelliJ project files
-bower_components/
+bower_components/*
+!bower_components/js-md5/
+bower_components/js-md5/*
 !bower_components/js-md5/build
 
 node_modules/
