@@ -5,33 +5,63 @@
     <title>Title</title>
 </head>
 <body>
-<form>
-    <input name="file" multiple="multiple" type="file"><br>
-    <!--<progress value="0" max="1"></progress><br>-->
-    <div></div>
+<form style="float: left;">
+    <input name="file" multiple="multiple" type="file">
     <button id="pause" disabled="disabled">pause</button>
     <button id="continue" disabled="disabled">continue</button>
+    <!--<progress value="0" max="1"></progress><br>-->
+    <div></div>
+
+    <h3>Config</h3>
+    <textarea cols="60" rows="30" style="font-size: medium; white-space: nowrap;"
+          onkeydown="if(event.keyCode===9){document.execCommand('insertText', null, '    ');return false;}"
+    >
+
+    </textarea>
+    <br>
+    <!--<button id="update">Update</button>-->
 </form>
+<pre style="float: left; margin-left: 40px;">
+    <code id="default-options" style="font-size: large;">
+
+    </code>
+</pre>
 <script src="bower_components/js-md5/build/md5.min.js"></script>
 <script src="mouploader.js"></script>
 <script>
     var form = document.querySelector('form')
+    var defaultDiv = document.querySelector('#default-options')
     var btnPause = form.querySelector('#pause')
+//    var btnUpdate = form.querySelector('#update')
     var btnContinue = form.querySelector('#continue')
     var inputFile = form.querySelector('input[type=file]')
+    var textarea = form.querySelector('textarea')
 //    var progress = form.querySelector('progress')
     var div = form.querySelector('div')
+    var h3 = form.querySelector('h3')
 
     var SIZE_50M = 1024 * 1024 * 50
 
     /* functions begin */
 
+    function setTip(text) {
+        h3.innerText = text
+    }
     function setProgress(val, prog) {
         prog.value = val;
+    }
+    function setDefaultOptionText(text) {
+        defaultDiv.innerText = text
     }
 
     function log() {
         console.log.apply(null, arguments)
+    }
+    function setTextArea (val) {
+        textarea.value = val;
+    }
+    function runJsonText(bindObj, text) {
+        return new Function("return "+text).bind(bindObj);
     }
 
     function setBtnPauseDisabled(val) {
@@ -50,7 +80,32 @@
         div.appendChild(inner);
         return inner.querySelector('progress')
     }
+
+    function $get(url, callback) {
+        var xhr = new XMLHttpRequest()
+        xhr.open('GET', url, true);
+        xhr.send(null);
+        xhr.addEventListener('readystatechange', function () {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                callback(xhr.responseText)
+            }
+        })
+    }
+
     /* functions end */
+
+    /* init begin */
+
+    $get("/default_options.txt", function (text) {
+//        var json = JSON.parse(text);
+        setDefaultOptionText(text)
+    })
+    $get("/options.txt", function (text) {
+//        var json = JSON.parse(text);
+        setTextArea(text)
+    })
+
+    /* init end */
 
     form.addEventListener('submit', function (e) {
         e.preventDefault()
@@ -71,47 +126,19 @@
 
         setBtnPauseDisabled(false);
         setBtnContinueDisabled(false);
-
         var self = this;
-        mo = MoUploader({
-            files: this.files,
-            uploadUrl: 'upload',
-            request: false,
-            onBeforeUpload: function (index) {
-                if(index>=0) {
-                    self.files[index].progress = appendUploading(self.files[index], index)
-                }
-            },
-            onOverAllProgress: function (index, loaded, total) {
 
-                console.log(loaded / total)
-                setProgress(loaded / total, self.files[index].progress)
-            },
-            onLoad: function (index, chunkIndex, chunksNum) {
-                console.log('onLoad', this, arguments)
-            },
-            onAbort: function (index, chunkIndex, chunksNum) {
-                console.log('onAbort', this, arguments)
-            },
-            onError: function (index, chunkIndex, chunksNum) {
-                console.log('onError', this, arguments)
-            },
-            onContinue: function (file, md5, index) {
-                return new Promise(function(reslove, reject) {
-                    var xhr = new XMLHttpRequest()
-                    xhr.open('GET', '/getFile?md5='+md5, true);
-                    xhr.send(null);
-                    xhr.addEventListener('readystatechange', function () {
-                        if(xhr.readyState === 4 && xhr.status === 200) {
-                            var json = JSON.parse(xhr.responseText);
-                            log(json)
-                            reslove(json.pos)
-                        }
-                    })
-                })
-            }
-        })
+        try {
+            var a = runJsonText(this, textarea.value)()
+            log(a);
+            mo = MoUploader(a)
+        } catch (ex) {
+            setTip(ex.message)
+        }
 
+    })
+    window.addEventListener('error', function (e) {
+        setTip(e.error.message)
     })
 </script>
 </body>

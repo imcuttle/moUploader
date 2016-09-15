@@ -1,0 +1,37 @@
+{
+    // chunk Size: byte
+    chunkSize: (1<<20) * 5,
+    // Number: request Number.
+    // Array: files requests.
+    // Boolean: open or close Slice, if false, chunkSize don't work.
+    request: 3,
+    files: [],
+    uploadUrl: '/',
+    // function: get uploaded pos.
+    // arguments: file, md5, index.
+    // need return a promise object which will return uploaded pos.
+    onContinue: null,
+    // if false, md5 will be setted by filename.
+    md5: true,
+    // md5Size: slice file 0 - md5Size for calculate md5
+    md5Size: (1<<20) * 50,
+    // called when before upload.
+    // arguments: file index or -1 (will begin upload)
+    onBeforeUpload: null,
+    // function: uploading progress listener.
+    // *only listen one request.*
+    // arguments: index, chunkIndex, chunksNum, loaded, total.
+    onProgress: null,
+    // function: overall uploading progress listener.
+    // arguments: index, loaded, total
+    onOverAllProgress: null,
+    // function: called when one request is ended.
+    // arguments: index, chunkIndex, chunksNum
+    onLoad: null,
+    // function: called when one request is aborted.
+    // arguments: index, chunkIndex, chunksNum
+    onAbort: null,
+    // function: called when one request happens error.
+    // arguments: index, chunkIndex, chunksNum
+    onError: null
+}

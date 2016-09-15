@@ -1,0 +1,31 @@
+{
+    files: this.files,
+    uploadUrl: 'upload',
+    request: false,
+    onBeforeUpload: function (index) {
+        if(index>=0) {
+            this.files[index].progress = appendUploading(this.files[index], index)
+        }
+    },
+    onOverAllProgress: function (index, loaded, total) {
+        console.log(loaded / total)
+        setProgress(loaded / total, this.files[index].progress)
+    },
+    onLoad: function (index, chunkIndex, chunksNum) {
+        console.log('onLoad', this, arguments)
+    },
+    onAbort: function (index, chunkIndex, chunksNum) {
+        console.log('onAbort', this, arguments)
+    },
+    onError: function (index, chunkIndex, chunksNum) {
+        console.log('onError', this, arguments)
+    },
+    onContinue: function (file, md5, index) {
+        return new Promise(function(reslove, reject) {
+            $get("/getFile?md5="+md5, function (text) {
+                var json = JSON.parse(text)
+                reslove(json.pos)
+            })
+        })
+    }
+}

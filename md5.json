@@ -3,9 +3,27 @@
         "type": "video/mp4",
         "lastModified": "1473807394000",
         "name": "dl.mp4",
-        "size": 5242880,
-        "chunks": "174",
-        "chunk": "172",
-        "pos": "2223911806"
+        "size": 0,
+        "pos": "2230335943",
+        "chunks": 1,
+        "chunk": 0
+    },
+    "9934d632b6361c90f645bb19d4a76dbf": {
+        "type": "image/vnd.adobe.photoshop",
+        "lastModified": "1473327033000",
+        "name": "团队云列表页2 (1).psd",
+        "size": 1598082,
+        "pos": "26214400",
+        "chunks": 1,
+        "chunk": 0
+    },
+    "余聪 报告.docx": {
+        "type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "lastModified": "1473737458000",
+        "name": "余聪 报告.docx",
+        "size": 1686643,
+        "pos": "0",
+        "chunks": 1,
+        "chunk": 0
     }
 }

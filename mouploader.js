@@ -137,7 +137,7 @@ function MoUploader(ops) {
             return getMD5Hex(!!ops.md5 && typeof window.md5 === 'function', file, md5Size, isMd5Map)
                 .then(function (md5str) {
                     data.md5 = md5str;
-                    return ops.onContinue.call(null, file, data.md5, i)
+                    return ops.onContinue(file, data.md5, i)
                         .then(function (pos) {
                             var uploads = [], chunkData, dataList = [];
                             var bg = isNaN(pos) ? 0 : Number(pos);
@@ -241,9 +241,9 @@ function MoUploader(ops) {
                     if((sums[0]+xhrList[index].loaded)>total) {
                         total = sums[0]+xhrList[index].loaded
                     }
-                    ops.onOverAllProgress.call(xhr, index, sums[0]+xhrList[index].loaded, total);
+                    ops.onOverAllProgress(index, sums[0]+xhrList[index].loaded, total);
                 }
-                ops.onProgress && ops.onProgress.call(this, index, chunkIndex, chunksNum, e.loaded, e.total)
+                ops.onProgress && ops.onProgress(index, chunkIndex, chunksNum, e.loaded, e.total)
             })
             xhr.addEventListener('load', function (e) {
                 resolve({type: 'load', xhr: this, index: index})
@@ -255,17 +255,17 @@ function MoUploader(ops) {
                 //     xhrList[index].isEnded = true;
                 // }
 
-                ops.onLoad && ops.onLoad.call(this, index, chunkIndex, chunksNum, e)
+                ops.onLoad && ops.onLoad(index, chunkIndex, chunksNum, e)
             })
             xhr.addEventListener('abort', function (e) {
                 resolve({type: 'abort', xhr: this, index: index, data: data})
                 xhrList[index][chunkIndex].isAborted = true
-                ops.onAbort && ops.onAbort.call(this, index, chunkIndex, chunksNum, e)
+                ops.onAbort && ops.onAbort(index, chunkIndex, chunksNum, e)
             })
             xhr.addEventListener('error', function (e) {
                 resolve({type: 'error', xhr: this, index: index, data: data})
                 xhrList[index][chunkIndex].isAborted = true
-                ops.onError && ops.onError.call(this, index, chunkIndex, chunksNum, e)
+                ops.onError && ops.onError(index, chunkIndex, chunksNum, e)
             })
 
             xhr.open('POST', ops.uploadUrl, true);
@@ -316,6 +316,6 @@ if(typeof define === 'function') {
     define('MoUploader', MoUploader)
 }
 
-if(module && module.exports) {
+if(typeof module !== 'undefined' && module.exports) {
     module.exports = MoUploader;
 }
