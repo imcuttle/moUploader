@@ -11,6 +11,7 @@ var URL = require('url')
 var db = require('./db')
 
 var server = http.createServer(function (req, res) {
+
     console.log(req.url)
     if(req.url == '/') {
         fs.readFile('./demo.html', (err, data) => {
@@ -23,17 +24,16 @@ var server = http.createServer(function (req, res) {
         return;
     }
 
-    if(req.url == '/upload') {
-        // req.setEncoding(null)
-        // console.log(req.headers['Content-Disposition'])
-        req.on('data', (chunk) => {
-            // console.log(chunk.toString())
-        })
+    if(req.url.startsWith('/upload')) {
+        /*res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': '*',
+            // 'Access-Control-Allow-Headers': 'Accept-Ranges, Content-Encoding, Content-Length, Content-Range',
+            'Access-Control-Expose-Headers': 'Accept-Ranges, Content-Encoding, Content-Length, Content-Range'
+        })*/
         var param = {}
         var form = makeForm(param)
         form.on('close', () => {
-            res.end();
-
             console.log(param)
             var _md5 = param.md5;
             delete param.md5;
@@ -42,12 +42,28 @@ var server = http.createServer(function (req, res) {
                 db.save();
             }
 
+            var d = new Date()
+            res.end(JSON.stringify({
+                errmsg: 'success',
+                errno: 0,
+                result: {
+                    fid: d.getTime(),
+                    ctime: `${d.getFullYear()}-${d.getMonth()}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+                    allow_edit: 0,
+                    filename: param.name.replace(/\.[^\.]*$/, ''),
+                    filetype: 100,
+                    name: 'Moyu'
+                }
+            }))
         })
         form.parse(req)
         return;
     }
 
     if(req.url.startsWith('/getFile')) {
+        res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*'
+        })
         var query = URL.parse(req.url, true).query
         var _md5 = query.md5;
 
@@ -65,7 +81,7 @@ var server = http.createServer(function (req, res) {
     read.pipe(res)
     read.on('error', err=>console.error)
 }).on('error', (er) => console.error)
-.listen(3000)
+.listen(4040)
 
 server.on('close', () => {
     console.log('closed');
@@ -106,10 +122,11 @@ function makeForm(param) {
             json.size = parseInt(json.size!=null?json.size : 0)
         }
         if(!json || (json.pos+json.size) <= param.pos) {
+            param.pos = parseInt(param.pos) || 0
             param.size = bf.length
             db.set(param.md5, param)
             db.save();
-            writeBuffer(bf, p, param.pos || 0)
+            writeBuffer(bf, p, param.pos)
         }
     }
     form.on('progress', (bytesReceived, bytesExpected) => {

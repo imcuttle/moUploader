@@ -4,7 +4,7 @@
         "lastModified": "1473807394000",
         "name": "dl.mp4",
         "size": 0,
-        "pos": "2230335943",
+        "pos": 2230335943,
         "chunks": 1,
         "chunk": 0
     },
@@ -23,6 +23,71 @@
         "name": "余聪 报告.docx",
         "size": 1686643,
         "pos": "0",
+        "chunks": 1,
+        "chunk": 0
+    },
+    "022194b67461e9eb254b77027624e38d": {
+        "type": "image/png",
+        "lastModified": "1473767111000",
+        "name": "sorry.png",
+        "size": 0,
+        "pos": 26385,
+        "chunks": 1,
+        "chunk": 0
+    },
+    "2850c30e4a46405f2f3cbde2dc75352a": {
+        "type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "lastModified": "1473737501000",
+        "name": "余聪 报告.docx",
+        "size": 0,
+        "pos": 1686594,
+        "chunks": 1,
+        "chunk": 0
+    },
+    "db5775d94cdff23c934fe4d35a031667": {
+        "type": "text/plain",
+        "lastModified": "1473668885000",
+        "name": "xian.txt",
+        "size": 0,
+        "pos": "10838",
+        "chunks": 1,
+        "chunk": 0
+    },
+    "b642c5ea0e0d75accfe7fdd50220db15": {
+        "type": "image/jpeg",
+        "lastModified": "1473956725000",
+        "name": "22.jpg",
+        "size": 46663,
+        "pos": 0,
+        "chunks": 1,
+        "chunk": 0
+    },
+    "558b8205c53e7b1bfec5227542b3996e": {
+        "type": "application/msword",
+        "lastModified": "1473942755000",
+        "name": "HiWebAppJSV0.9.7 (2).doc",
+        "md5": "558b8205c53e7b1bfec5227542b3996e",
+        "size": 97489,
+        "pos": 0,
+        "chunks": 1,
+        "chunk": 0
+    },
+    "7a2b648a6ac8ef3a66178eec9233ff93": {
+        "type": "video/mp4",
+        "lastModified": "1473807394000",
+        "name": "dl.mp4",
+        "md5": "7a2b648a6ac8ef3a66178eec9233ff93",
+        "size": 10525290,
+        "pos": 501586546,
+        "chunks": 1,
+        "chunk": 0
+    },
+    "f0c9a42816e0a52519faedd383461e39": {
+        "type": "image/png",
+        "lastModified": "1473956655000",
+        "name": "123123.png",
+        "size": 218098,
+        "pos": 0,
         "chunks": 1,
         "chunk": 0
     }

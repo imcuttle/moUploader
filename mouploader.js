@@ -228,6 +228,9 @@ function MoUploader(ops) {
             var xhr = new XMLHttpRequest();
 
             xhr.upload.addEventListener('progress', function(e) {
+                if(!e.lengthComputable) {
+                    return;
+                }
                 // resolve({type: 'progress', xhr: this, index: index})
                 xhrList[index].loaded = xhrList[index].loaded || 0
                 xhr.loaded = e.loaded
