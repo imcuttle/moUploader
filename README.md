@@ -38,7 +38,7 @@ file-upload/
 ├── md5.json # 数据
 ├── mouploader.js # 源码
 ├── README.md 
-└── server.js # demo.html服务, 建立在3000端口
+└── server.js # demo.html服务, 建立在4040端口
 
 1 directories, 8 files.
 ```
