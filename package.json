@@ -1,0 +1,26 @@
+{
+  "name": "mo-uploader",
+  "version": "1.0.0",
+  "description": "上传文件，基本上是每一个网站应用都会具备的一个功能。对于一个网络存储应用，对于上传功能要求更是迫切。   如今市面上成熟上传插件，如`WebUploader`，\"体积太大\"，不适合于移动端上传；再加上作为一位程序员的\"操守\"，当然还是更喜欢自己造轮子。",
+  "main": "mouploader.js",
+  "dependencies": {
+    "js-md5": "^0.4.1"
+  },
+  "devDependencies": {
+    "multiparty": "^4.1.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moyuyc/moUploader.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moyuyc/moUploader/issues"
+  },
+  "homepage": "https://github.com/moyuyc/moUploader#readme"
+}

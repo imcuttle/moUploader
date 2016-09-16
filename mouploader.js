@@ -2,6 +2,12 @@
  * Created by Moyu on 16/9/13.
  */
 
+var md5;
+if(typeof require === 'function') {
+    md5 = require('js-md5')
+}
+
+
 function MoUploader(ops) {
 
     var default_ops = {
@@ -48,7 +54,7 @@ function MoUploader(ops) {
     var md5Size = ops.md5Size;
     var request = ops.request === true ? 1 : ops.request;
 
-    var __onContinue = ops.onContinue || function () {return 0;}
+    var __onContinue = ops.onContinue || function () {return new Promise(function (resolve) {resolve(0)});}
     ops.onContinue = function () {
         var args = [].slice.call(arguments)
         return new Promise(function (resolve) {
@@ -114,7 +120,7 @@ function MoUploader(ops) {
 
                 fr.onload = function (e) {
                     var text = e.target.result;
-                    md5text = window.md5(text)
+                    md5text = md5(text)
                     md5Map[file.name+file.size] = md5text
                     resolve(md5text)
                 }
@@ -134,7 +140,7 @@ function MoUploader(ops) {
                 lastModified: file.lastModified,
                 name: file.name,
             }
-            return getMD5Hex(!!ops.md5 && typeof window.md5 === 'function', file, md5Size, isMd5Map)
+            return getMD5Hex(!!ops.md5 && typeof md5 === 'function', file, md5Size, isMd5Map)
                 .then(function (md5str) {
                     data.md5 = md5str;
                     return ops.onContinue(file, data.md5, i)
@@ -241,9 +247,9 @@ function MoUploader(ops) {
                     if((sums[0]+xhrList[index].loaded)>total) {
                         total = sums[0]+xhrList[index].loaded
                     }
-                    ops.onOverAllProgress(index, sums[0]+xhrList[index].loaded, total);
+                    ops.onOverAllProgress(index, sums[0]+xhrList[index].loaded, total, e);
                 }
-                ops.onProgress && ops.onProgress(index, chunkIndex, chunksNum, e.loaded, e.total)
+                ops.onProgress && ops.onProgress(index, chunkIndex, chunksNum, e.loaded, e.total, e)
             })
             xhr.addEventListener('load', function (e) {
                 resolve({type: 'load', xhr: this, index: index})
