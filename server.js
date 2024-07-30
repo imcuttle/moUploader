@@ -11,6 +11,11 @@ var URL = require('url')
 var db = require('./db')
 
 var server = http.createServer(function (req, res) {
+    if (path.normalize(decodeURI(req.url)) !== decodeURI(req.url)) {
+        res.statusCode = 403;
+        res.end();
+        return;
+    }
 
     console.log(req.url)
     if(req.url == '/') {
